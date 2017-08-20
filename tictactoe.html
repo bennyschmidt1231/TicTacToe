@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="TicTac/tictac.css"/>
+		<link rel="icon" href="TicTac/tictactoeicon.png"/>
+		<title>Tic Tac Toe</title>
+		<script type="text/javascript">
+			var game = ['','','','','','','','',''];
+			var turn = 0;
+			var currentCanvas;
+			var c;
+			var cxt;
+			var squaresFilled = 0;
+
+
+			function setMove(canvasNumber){
+				currentCanvas = "canvas"+canvasNumber;
+				c = document.getElementById(currentCanvas);
+				cxt = c.getContext("2d");
+
+				if(game[canvasNumber - 1] == ''){
+					if(turn % 2 == 0){
+						cxt.fillStyle = "#ed212b";
+						cxt.fillRect(0,0, c.width, c.height);
+						game[canvasNumber-1] = 'Red';
+					}
+
+					else{
+						cxt.fillStyle = "yellow";
+						cxt.fillRect(0,0, c.width, c.height);
+						game[canvasNumber-1] = 'Yellow';
+					}
+
+					turn++;
+					squaresFilled++;
+					/*If not here then the block won't be coloured in before check*/
+					setTimeout(function(){
+						checkGame(game[canvasNumber - 1]);
+					},10);
+
+					if(squaresFilled == 9){
+						/*If not here then the block won't be coloured in before alert*/
+						setTimeout(function(){	
+							alert("The game is over ~ no one won");
+							playAgain();
+						},10);
+					}
+				}
+				else{
+					window.alert("Sorry you can't do that move");
+				}
+
+			}
+
+			function checkGame(player){
+				var rows = [0,3,6];
+				var columns = [0,1,2];
+				
+				for(var i = 0; i < 3; i++) {
+					/*Won row*/
+					if(game[rows[i]] != '' && (game[rows[i]] == game[rows[i] + 1] && game[rows[i]] == game[rows[i] + 2])) {
+						alert("Congratulations " + player + " you won!");
+						playAgain();
+					}
+					/*Won column*/
+					if(game[columns[i]] != '' && (game[columns[i]] == game[columns[i] + 3] && game[columns[i]] == game[columns[i] + 6])) {
+						alert("Congratulations " + player + " you won!");
+						playAgain();
+					}
+				}
+				/*Won diagonally*/
+				if((game[0] != '' && (game[0] == game[4] && game[0] == game[8])) || (game[2] != '' && (game[2] == game[4] && game[2] == game[6]))) {
+					alert("Congratulations " + player + " you won!");
+					playAgain();
+				}
+			}
+
+			function playAgain(){
+				play = confirm("Do you want to play again?");
+				if(play){
+					for(var i = 0; i < 9; i++){
+						game[i] = '';
+						currentCanvas = "canvas" + (i + 1);
+						c = document.getElementById(currentCanvas);
+						cxt = c.getContext("2d");
+						cxt.clearRect(0, 0, c.width, c.height);
+						
+					}
+					squaresFilled = 0;
+				}
+				else {
+					location.reload(false);
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id ="gameField">
+			<h1> TIC TAC TOE!</h1>
+			<canvas id = "canvas1"  width="70" height="70" style="border:2px solid black" onclick="setMove(1)"></canvas>
+			<canvas id = "canvas2"  width="70" height="70" style="border:2px solid black" onclick="setMove(2)"></canvas>
+			<canvas id = "canvas3"  width="70" height="70" style="border:2px solid black" onclick="setMove(3)"></canvas><br/>
+			<canvas id = "canvas4"  width="70" height="70" style="border:2px solid black" onclick="setMove(4)"></canvas>
+			<canvas id = "canvas5"  width="70" height="70" style="border:2px solid black" onclick="setMove(5)"></canvas>
+			<canvas id = "canvas6"  width="70" height="70" style="border:2px solid black" onclick="setMove(6)"></canvas><br/>
+			<canvas id = "canvas7"  width="70" height="70" style="border:2px solid black" onclick="setMove(7)"></canvas>
+			<canvas id = "canvas8"  width="70" height="70" style="border:2px solid black" onclick="setMove(8)"></canvas>
+			<canvas id = "canvas9"  width="70" height="70" style="border:2px solid black" onclick="setMove(9)"></canvas>
+		</div>
+	</body>
+</html>
+
+
